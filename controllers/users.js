@@ -26,10 +26,15 @@ module.exports.findAllUsers = (req, res) => {
 
 module.exports.findUserById = (req, res) => {
   User.findById(req.params.userId)
-    .then((user) => res.send({ data: user }))
+    .then((user) => {
+      if (!user) {
+        res.status(404).send({ message: `User with id: ${req.params.userId} not found` });
+      return;
+    }
+    res.send({ data: user })})
     .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(404).send({ message: err.message });
+            if (err.name === 'CastError') {
+        res.status(400).send({ message: `User with id: ${req.params.userId} not correct` });
         return;
       }
       res.status(500).send({ message: err.message });
