@@ -37,7 +37,7 @@ module.exports.deleteCardById = (req, res) => {
       res.status(404).send({ message: `Card with id: ${req.params.cardId} not found`  });
     });
 };
-
+//нужен пуш
 module.exports.likeCard = (req, res) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
