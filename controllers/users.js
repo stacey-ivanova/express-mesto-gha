@@ -54,7 +54,7 @@ module.exports.updateProfile = (req, res) => {
   )
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.name === ' ValidationError') {
+      if (err.name === 'ValidationError') {
         res.status(400).send({ message: err.message });
       } else if (err.name === 'CastError') {
         res.status(404).send({ message: err.message });
@@ -72,7 +72,7 @@ module.exports.updateAvatar = (req, res) => {
   })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.name === ' ValidationError') {
+      if (err.name === 'ValidationError') {
         res.status(400).send({ message: err.message });
       } else if (err.name === 'CastError') {
         res.status(404).send({ message: err.message });

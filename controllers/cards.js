@@ -32,9 +32,14 @@ module.exports.findAllCards = (req, res) => {
 module.exports.deleteCardById = (req, res) => {
 
   Card.findByIdAndRemove(req.params.cardId)
-    .then((card) => res.send({ data: card }))
+    .then((card) => {
+      if (!card) {
+        res.status(404).send({ message: `User with id: ${req.params.cardId} not found` });
+      return;
+    }
+      res.send({ data: card })})
     .catch((err) => {
-      res.status(404).send({ message: `Card with id: ${req.params.cardId} not found`  });
+      res.status(400).send({ message: `Card with id: ${req.params.cardId} not correct`  });
     });
 };
 //нужен пуш
@@ -54,7 +59,7 @@ module.exports.likeCard = (req, res) => {
       if (err.name === 'ValidationError') {
         res.status(400).send({ message: err.message });
       } else if (err.name === 'CastError') {
-        res.status(404).send({ message: `Card with id: ${req.params.cardId} not correct` });
+        res.status(400).send({ message: `Card with id: ${req.params.cardId} not correct` });
         return;
       }
       res.status(500).send({ message: err.message });
@@ -77,7 +82,7 @@ module.exports.dislikeCard = (req, res) => {
       if (err.name === 'ValidationError') {
         res.status(400).send({ message: err.message });
       } else if (err.name === 'CastError') {
-        res.status(404).send({ message: `Card with id: ${req.params.cardId} not correct` });
+        res.status(400).send({ message: `Card with id: ${req.params.cardId} not correct` });
         return;
       }
       res.status(500).send({ message: err.message });
