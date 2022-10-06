@@ -44,12 +44,17 @@ module.exports.likeCard = (req, res) => {
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
-    .then((card) => res.send({ data: card }))
+    .then((card) => {
+      if (!card) {
+        res.status(404).send({ message: `User with id: ${req.params.cardId} not found` });
+      return;
+    }
+      res.send({ data: card })})
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(400).send({ message: err.message });
       } else if (err.name === 'CastError') {
-        res.status(404).send({ message: `Card with id: ${req.params.cardId} not found` });
+        res.status(404).send({ message: `Card with id: ${req.params.cardId} not correct` });
         return;
       }
       res.status(500).send({ message: err.message });
@@ -62,12 +67,17 @@ module.exports.dislikeCard = (req, res) => {
     { $pull: { likes: req.user._id } },
     { new: true },
   )
-    .then((card) => res.send({ data: card }))
+    .then((card) => {
+      if (!card) {
+        res.status(404).send({ message: `User with id: ${req.params.cardId} not found` });
+      return;
+    }
+      res.send({ data: card })})
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(400).send({ message: err.message });
       } else if (err.name === 'CastError') {
-        res.status(404).send({ message: `Card with id: ${req.params.cardId} not found` });
+        res.status(404).send({ message: `Card with id: ${req.params.cardId} not correct` });
         return;
       }
       res.status(500).send({ message: err.message });
