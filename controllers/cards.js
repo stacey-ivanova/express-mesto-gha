@@ -1,4 +1,5 @@
 const Card = require('../models/card');
+const { ERROR_400, ERROR_404, ERROR_500 } = require('../constants');
 // const { NotFoundError } = require('../errors/NotFoundError');
 // const { InternalError } = require('../errors/InternalError');
 // const { BadRequestError } = require('../errors/BadRequestError');
@@ -13,10 +14,8 @@ module.exports.createCard = (req, res) => {
     .catch(
       (err) => {
         if (err.name === 'ValidationError') {
-          res.status(400).send({ message: err.message });
-          return;
-        }
-        res.status(500).send({ message: err.message });
+          res.status(ERROR_400).send({ message: ' Переданы некорректные данные при создании карточки' });
+        } else res.status(ERROR_500).send({ message: 'Ошибка по умолчанию.' });
       },
     );
 };
@@ -24,25 +23,26 @@ module.exports.createCard = (req, res) => {
 module.exports.findAllCards = (req, res) => {
   Card.find({})
     .then((card) => res.send({ data: card }))
-    .catch((err) => {
-      res.status(500).send({ message: err.message });
+    .catch(() => {
+      res.status(ERROR_500).send({ message: 'Ошибка по умолчанию.' });
     });
 };
 
 module.exports.deleteCardById = (req, res) => {
-
   Card.findByIdAndRemove(req.params.cardId)
     .then((card) => {
       if (!card) {
-        res.status(404).send({ message: `User with id: ${req.params.cardId} not found` });
-      return;
-    }
+        res.status(ERROR_404).send({ message: 'Карточка с указанным _id не найдена.' });
+        return;
+      }
       res.send({ data: card })})
     .catch((err) => {
-      res.status(400).send({ message: `Card with id: ${req.params.cardId} not correct`  });
+      if (err.name === 'CastError') {
+        res.status(ERROR_400).send({ message: 'Переданы некорректные данные для удаления карточки' });
+} else { res.status(ERROR_500).send({ message: 'Ошибка по умолчанию.' }); }
     });
 };
-//нужен пуш
+
 module.exports.likeCard = (req, res) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
@@ -51,18 +51,16 @@ module.exports.likeCard = (req, res) => {
   )
     .then((card) => {
       if (!card) {
-        res.status(404).send({ message: `User with id: ${req.params.cardId} not found` });
-      return;
-    }
+        res.status(ERROR_404).send({ message: 'Передан несуществующий _id карточки' });
+        return;
+      }
       res.send({ data: card })})
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(400).send({ message: err.message });
+        res.status(ERROR_400).send({ message: 'Переданы некорректные данные для постановки лайка. ' });
       } else if (err.name === 'CastError') {
-        res.status(400).send({ message: `Card with id: ${req.params.cardId} not correct` });
-        return;
-      }
-      res.status(500).send({ message: err.message });
+        res.status(ERROR_400).send({ message: 'Переданы некорректные данные карточки.' });
+      } else res.status(ERROR_500).send({ message: 'Ошибка по умолчанию.' });
     });
 };
 
@@ -74,17 +72,16 @@ module.exports.dislikeCard = (req, res) => {
   )
     .then((card) => {
       if (!card) {
-        res.status(404).send({ message: `User with id: ${req.params.cardId} not found` });
-      return;
-    }
-      res.send({ data: card })})
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        res.status(400).send({ message: err.message });
-      } else if (err.name === 'CastError') {
-        res.status(400).send({ message: `Card with id: ${req.params.cardId} not correct` });
+        res.status(ERROR_404).send({ message: 'Передан несуществующий _id карточки' });
         return;
       }
-      res.status(500).send({ message: err.message });
+      res.send({ data: card });
+    })
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        res.status(ERROR_400).send({ message: 'Переданы некорректные данные для снятия лайка. ' });
+      } else if (err.name === 'CastError') {
+        res.status(ERROR_400).send({ message: 'Переданы некорректные данные карточки.' });
+      } else res.status(ERROR_500).send({ message: 'Ошибка по умолчанию.' });
     });
 };
