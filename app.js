@@ -23,8 +23,8 @@ app.use((req, res, next) => {
 
 app.use('/users', routerUser);
 app.use('/cards', routerCard);
-app.use((req, res, next) => {
-  res.status(404).send({ message: `Page not found` });
-})
+app.use((req, res) => {
+  res.status(404).send({ message: 'Страница не найдена' });
+});
 
 app.listen(PORT);

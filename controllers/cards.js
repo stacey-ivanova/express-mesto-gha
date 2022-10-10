@@ -35,11 +35,12 @@ module.exports.deleteCardById = (req, res) => {
         res.status(notFoundError).send({ message: 'Карточка с указанным _id не найдена.' });
         return;
       }
-      res.send({ data: card })})
+      res.send({ data: card });
+    })
     .catch((err) => {
       if (err.name === 'CastError') {
         res.status(badRequestError).send({ message: 'Переданы некорректные данные для удаления карточки' });
-} else { res.status(internalError).send({ message: 'Ошибка по умолчанию.' }); }
+      } else { res.status(internalError).send({ message: 'Ошибка по умолчанию.' }); }
     });
 };
 
@@ -54,7 +55,8 @@ module.exports.likeCard = (req, res) => {
         res.status(notFoundError).send({ message: 'Передан несуществующий _id карточки' });
         return;
       }
-      res.send({ data: card })})
+      res.send({ data: card });
+    })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(badRequestError).send({ message: 'Переданы некорректные данные для постановки лайка. ' });

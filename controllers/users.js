@@ -11,8 +11,7 @@ module.exports.createUser = (req, res) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(badRequestError).send({ message: 'Переданы некорректные данные при создании пользователя.' });
-      }
-      else {res.status(internalError).send({ message: 'Ошибка по умолчанию.' }); }
+      } else { res.status(internalError).send({ message: 'Ошибка по умолчанию.' }); }
     });
 };
 
@@ -31,7 +30,8 @@ module.exports.findUserById = (req, res) => {
         res.status(notFoundError).send({ message: 'Пользователь по указанному _id не найден. ' });
         return;
       }
-      res.send({ data: user })})
+      res.send({ data: user });
+    })
     .catch((err) => {
       if (err.name === 'CastError') {
         res.status(badRequestError).send({ message: 'Переданы некорректные данные при запросе.' });
@@ -57,7 +57,7 @@ module.exports.updateProfile = (req, res) => {
       res.send({ data: user });
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
         res.status(badRequestError).send({ message: 'Переданы некорректные данные при обновлении профиля.' });
       } else { res.status(internalError).send({ message: 'Ошибка по умолчанию.' }); }
     });
