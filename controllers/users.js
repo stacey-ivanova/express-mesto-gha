@@ -27,7 +27,7 @@ module.exports.createUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы некорректные данные при создании пользователя'));
-      }else (next(new ConflictError(('Пользователь с таким email уже существует'))))
+      } else (next(new ConflictError(('Пользователь с таким email уже существует'))));
     });
 };
 
@@ -90,7 +90,7 @@ module.exports.updateAvatar = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError('Переданы некорректные данные при обновлении аватара'))
+        next(new BadRequestError('Переданы некорректные данные при обновлении аватара'));
       } else next(err);
     });
 };
@@ -101,8 +101,7 @@ module.exports.login = (req, res, next) => {
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, 'super-strong-password', { expiresIn: '7d' });
-      res.send({token: token, message: 'Авторизация прошла успешно.'})
-      
+      res.send({ token, message: 'Авторизация прошла успешно.' });
     })
     .catch((err) => {
       if (err.name === 'Error') {
