@@ -1,11 +1,11 @@
-class BadRequestError extends Error {
+class ConflictError extends Error {
   constructor(message) {
     super();
     this.message = message;
-    this.statusCode = 400;
+    this.statusCode = 409;
   }
 }
 
 module.exports = {
-  BadRequestError,
+  ConflictError,
 };
