@@ -24,7 +24,7 @@
     "joi": "^17.6.3",
     "joi-password": "^4.0.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.6.4",
+    "mongoose": "^5.1.5",
     "react": "^18.2.0",
     "validator": "^13.7.0"
   }

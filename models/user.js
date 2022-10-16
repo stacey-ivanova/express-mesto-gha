@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const val = require('validator');
 const bcrypt = require('bcryptjs');
 const { Joi } = require('celebrate');
 
@@ -20,9 +21,15 @@ const userSchema = new mongoose.Schema({
     default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
   },
   email: {
-    type: Joi.string().required().email(),
+    type: String,
     required: true,
     unique: true,
+    validate: {
+      validator(v) {
+        return val.isEmail(v);
+      },
+      message: 'Некорректный Email',
+    },
   },
   password: {
     type: String,
