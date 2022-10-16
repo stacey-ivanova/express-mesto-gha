@@ -105,9 +105,9 @@ module.exports.login = (req, res, next) => {
       res.send({ token, message: 'Авторизация прошла успешно.' });
     })
     .catch((err) => {
-      // console.log(err)
+      // console.log(err.name)
       if (err.name === 'Error') {
-        next(new UnauthorizedError('Неправильные почта или пароль'));
+        next(new BadRequestError('Неправильные почта или пароль'));
       } else next(err);
     });
 };
