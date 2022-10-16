@@ -14,6 +14,7 @@ module.exports.createUser = (req, res, next) => {
       avatar: req.body.avatar,
       email: req.body.email,
       password: hash,
+
     }))
     .then((user) => {
       res.send({
@@ -21,7 +22,6 @@ module.exports.createUser = (req, res, next) => {
         about: user.about,
         avatar: user.avatar,
         email: user.email,
-        password: user.password,
       });
     })
     .catch((err) => {
@@ -104,6 +104,7 @@ module.exports.login = (req, res, next) => {
       res.send({ token, message: 'Авторизация прошла успешно.' });
     })
     .catch((err) => {
+      // console.log(err)
       if (err.name === 'Error') {
         next(new UnauthorizedError('Неправильные почта или пароль'));
       } else next(err);
