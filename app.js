@@ -8,8 +8,6 @@ const routerCard = require('./routes/cards');
 const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const { NotFoundError } = require('./errors/NotFoundError');
-const { InternalError } = require('./errors/InternalError');
-const { ValidateError } = require('./errors/ValidateError');
 
 const app = express();
 
@@ -58,14 +56,13 @@ app.use(errors());
 // });
 
 app.use((err, req, res, next) => {
-  // const { statusCode = 500, message } = err;
-  res.status(err.statusCode).send({ message: err.message });
+  const { statusCode = 500, message } = err;
+  res.status(err.statusCode).send({
+    message: statusCode === 500
+      ? 'На сервере произошла ошибка'
+      : message,
+  });
+  next();
 });
 
 app.listen(PORT);
-
-// message: statusCode === 500
-// ? 'На сервере произошла ошибка'
-// : message,
-// });
-// next();

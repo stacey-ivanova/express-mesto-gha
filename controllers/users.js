@@ -25,7 +25,6 @@ module.exports.createUser = (req, res, next) => {
       });
     })
     .catch((err) => {
-      console.log(err)
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы некорректные данные при создании пользователя'));
       } else next(new ConflictError('Пользователь с таким email уже существует'));
@@ -105,15 +104,13 @@ module.exports.login = (req, res, next) => {
       res.send({ token, message: 'Авторизация прошла успешно.' });
     })
     .catch((err) => {
-      // console.log(err.name)
       if (err.name === 'Error') {
-        next(new BadRequestError('Неправильные почта или пароль'));
+        next(new UnauthorizedError('Пользователь с таким email уже существует'));
       } else next(err);
     });
 };
 
 module.exports.getProfile = (req, res, next) => {
-  console.log(req.user._id)
   User.findById(req.user._id)
     .then((user) => {
       if (!user) {

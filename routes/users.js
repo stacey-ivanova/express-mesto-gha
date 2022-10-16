@@ -10,7 +10,7 @@ const {
 
 router.get('/', findAllUsers);
 router.get('/me', getProfile);
-router.get('/:userId', celebrate({ query: Joi.object().keys({ _id: Joi.string().min(24).max(24) }) }), findUserById);
+router.get('/:userId', celebrate({ params: Joi.object().keys({ userId: Joi.string().min(24).max(24) }) }), findUserById);
 router.patch('/me', celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30).default('Жак-Ив Кусто'),
