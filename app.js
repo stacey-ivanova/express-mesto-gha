@@ -45,16 +45,6 @@ app.use('*', (req, res, next) => {
 });
 app.use(errors());
 
-// eslint-disable-next-line consistent-return
-// app.use((err, req, res, next) => {
-//   if (err.status) {
-//     return res.status(err.status).send({ message: err.message });
-//   }
-//   const error = new InternalError('Произошла ошибка на сервере1');
-//   res.status(error.status).send({ message: error.message });
-//   next();
-// });
-
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
   res.status(err.statusCode).send({
