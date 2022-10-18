@@ -16,7 +16,7 @@ router.patch('/me', celebrate({
     about: Joi.string().min(2).max(30).default('Исследователь'),
   }),
 }), updateProfile);
-router.get('/:userId', celebrate({ params: Joi.object().keys({ userId: Joi.string().min(24).max(24) }) }), findUserById);
+router.get('/:userId', celebrate({ params: Joi.object().keys({ userId: Joi.string().hex().length(24) }) }), findUserById);
 
 router.patch('/me/avatar', celebrate({
   body: Joi.object().keys({

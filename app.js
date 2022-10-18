@@ -25,7 +25,7 @@ const { PORT = 3000 } = process.env;
 app.post('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
-    password: Joi.string().min(4).alphanum().required(),
+    password: Joi.string().alphanum().required(),
   }),
 }), login);
 app.post('/signup', celebrate({
@@ -34,7 +34,7 @@ app.post('/signup', celebrate({
     about: Joi.string().min(2).max(30).default('Исследователь'),
     avatar: Joi.string().regex(/(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/).default('https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png'),
     email: Joi.string().required().email(),
-    password: Joi.string().min(4).required(),
+    password: Joi.string().required(),
   }),
 }), createUser);
 app.use('/users', auth, routerUser);
